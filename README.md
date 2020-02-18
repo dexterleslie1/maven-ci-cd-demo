@@ -1,0 +1,1 @@
+This maven project is mainly using for demonstrating CI/CD processes.
