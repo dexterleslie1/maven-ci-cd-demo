@@ -10,7 +10,8 @@ node {
 
             stage "Build docker"
             dir("src") {
-                sh "docker build --tag dexterleslie/maven-ci-cd-demo ."
+                def imageVariable = docker.build("dexterleslie/maven-ci-cd-demo")
+                imageVariable.push()
             }
         }
     } catch(Exception ex) {
