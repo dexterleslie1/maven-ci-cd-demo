@@ -7,6 +7,9 @@ node {
 
             stage "Compile"
             sh "docker run -v \$(pwd)/src:/usr/src/mymaven -v \$(pwd)/src/settings.xml:/usr/share/maven/ref/settings.xml -v volume-maven-repo:/root/.m2 -w /usr/src/mymaven maven:3.3-jdk-8 mvn clean package"
+
+            stage "Build docker"
+            sh "docker build --tag dexterleslie/maven-ci-cd-demo ."
         }
     } catch(Exception ex) {
         throw ex
