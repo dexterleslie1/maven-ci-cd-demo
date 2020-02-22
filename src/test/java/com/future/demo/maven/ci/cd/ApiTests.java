@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * @author dexterleslie@gmail.com
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         classes={Application.class},

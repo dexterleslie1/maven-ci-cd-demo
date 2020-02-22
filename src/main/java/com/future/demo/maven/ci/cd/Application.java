@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @author Dexterleslie.Chan
+ * @author dexterleslie@gmail.com
  */
 @SpringBootApplication
-//@ComponentScan(basePackages = "com.future.study")
 public class Application {
     /**
      *
