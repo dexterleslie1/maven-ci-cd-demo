@@ -26,6 +26,6 @@ public class ApiTests {
         ResponseEntity<String> response = this.restTemplate.getForEntity(
                 "http://localhost:8080/",
                 String.class);
-        Assert.assertEquals("This maven project is mainly using for demonstrating CI/CD processes.1", response.getBody());
+        Assert.assertEquals("This maven project is mainly using for demonstrating CI/CD processes.", response.getBody());
     }
 }
