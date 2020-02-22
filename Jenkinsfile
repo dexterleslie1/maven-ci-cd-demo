@@ -10,8 +10,10 @@ node {
 
             stage "Build docker"
             dir("src") {
-                def imageVariable = docker.build("dexterleslie/maven-ci-cd-demo")
-                imageVariable.push()
+                docker.withRegistry("", "credentialDockerIO") {
+                    def imageVariable = docker.build("dexterleslie/maven-ci-cd-demo")
+                    imageVariable.push()
+                }
             }
         }
     } catch(Exception ex) {
