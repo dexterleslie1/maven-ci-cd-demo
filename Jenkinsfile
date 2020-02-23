@@ -16,6 +16,26 @@ node {
                 }
             }
         }
+
+        node("slave-centos7-deploy") {
+            stage "Deploy"
+
+            sh '''
+                #!/bin/bash
+
+                containerIds=$(docker ps -a --format "{{.ID}}" --filter "ancestor=registry.cn-hangzhou.aliyuncs.com/future-common/maven-ci-cd-demo")
+                for containerId in $containerIds; do
+                        docker rm -f $containerId
+                done
+            '''
+
+            docker.withRegistry("https://registry.cn-hangzhou.aliyuncs.com") {
+                def imageVariable = docker.image("registry.cn-hangzhou.aliyuncs.com/future-common/maven-ci-cd-demo")
+                imageVariable.pull()
+                imageVariable.run("-p 80:8080")
+                sh "while ! nc -zv localhost 80; do sleep 1; done"
+            }
+        }
     } catch(Exception ex) {
         throw ex
     }
