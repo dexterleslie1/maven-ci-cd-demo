@@ -33,7 +33,15 @@ node {
                 def imageVariable = docker.image("registry.cn-hangzhou.aliyuncs.com/future-common/maven-ci-cd-demo")
                 imageVariable.pull()
                 imageVariable.run("-p 80:8080")
-                sh "while ! nc -zv localhost 80; do sleep 1; done"
+                
+                sh '''
+                    #!/bin/bash
+                    while [ "`curl -s http://localhost/status`" != "Ready" ]
+                    do
+                            echo "Wait for maven-ci-cd-demo service ready..."
+                            sleep 1
+                    done
+                '''
             }
         }
     } catch(Exception ex) {
