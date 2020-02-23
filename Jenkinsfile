@@ -1,12 +1,19 @@
 node {
     try {
-        node("slave-centos7") {
+        node("slave-build") {
             stage "Checkout"
             sh "rm -rf \$(pwd)/src"
-            sh "docker run --rm -v \$(pwd):/git alpine/git clone https://github.com/dexterleslie1/maven-ci-cd-demo.git src"
+            // sh "docker run --rm -v \$(pwd):/git alpine/git clone https://github.com/dexterleslie1/maven-ci-cd-demo.git src"
+            sh "curl -s --output settings.xml https://bucket-public-common.oss-cn-hangzhou.aliyuncs.com/settings.xml"
 
             stage "Compile"
-            sh "docker run --rm -v \$(pwd)/src:/usr/src/mymaven -v \$(pwd)/src/settings.xml:/usr/share/maven/ref/settings.xml -v volume-maven-repo:/root/.m2 -w /usr/src/mymaven maven:3.3-jdk-8 mvn clean package"
+            // sh "docker run --rm -v \$(pwd)/src:/usr/src/mymaven -v \$(pwd)/src/settings.xml:/usr/share/maven/ref/settings.xml -v volume-maven-repo:/root/.m2 -w /usr/src/mymaven maven:3.3-jdk-8 mvn clean package"
+            docker.image("maven:3.3-jdk-8").inside("-v ${env.WORKSPACE}/settings.xml:/usr/share/maven/ref/settings.xml -v volume-maven-repo:/root/.m2") {
+                sh "git clone https://github.com/dexterleslie1/maven-ci-cd-demo.git src"
+                dir("src") {
+                    sh "mvn clean package"
+                }
+            }
 
             stage "Build docker"
             dir("src") {
@@ -17,7 +24,7 @@ node {
             }
         }
 
-        node("slave-centos7-deploy") {
+        node("slave-build") {
             stage "Deploy"
 
             sh '''
