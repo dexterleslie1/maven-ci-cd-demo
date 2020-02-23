@@ -2,6 +2,7 @@ node {
     try {
         node("slave-build") {
             stage "Checkout"
+            sh "y | docker image prune"
             sh "rm -rf \$(pwd)/src"
             // sh "docker run --rm -v \$(pwd):/git alpine/git clone https://github.com/dexterleslie1/maven-ci-cd-demo.git src"
             sh "curl -s --output settings.xml https://bucket-public-common.oss-cn-hangzhou.aliyuncs.com/settings.xml"
