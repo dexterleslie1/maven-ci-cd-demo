@@ -31,7 +31,7 @@ node {
             sh '''
                 #!/bin/bash
 
-                containerIds=$(docker ps -a --format "{{.ID}}" --filter "ancestor=registry.cn-hangzhou.aliyuncs.com/future-common/maven-ci-cd-demo")
+                containerIds=$(docker ps -a --format "{{.ID}}" --filter "label=maven-ci-cd-demo-container")
                 for containerId in $containerIds; do
                         docker rm -f $containerId
                 done
@@ -40,8 +40,8 @@ node {
             docker.withRegistry("https://registry.cn-hangzhou.aliyuncs.com") {
                 def imageVariable = docker.image("registry.cn-hangzhou.aliyuncs.com/future-common/maven-ci-cd-demo")
                 imageVariable.pull()
-                imageVariable.run("-p 80:8080")
-                
+                imageVariable.run("-p 80:8080 -l maven-ci-cd-demo-container")
+
                 sh '''
                     #!/bin/bash
                     while [ "`curl -s http://localhost/status`" != "Ready" ]
