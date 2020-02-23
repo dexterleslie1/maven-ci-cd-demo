@@ -10,8 +10,8 @@ node {
 
             stage "Build docker"
             dir("src") {
-                docker.withRegistry("", "credentialDockerIO") {
-                    def imageVariable = docker.build("dexterleslie/maven-ci-cd-demo")
+                docker.withRegistry("https://registry.cn-hangzhou.aliyuncs.com", "credentialDockerAli") {
+                    def imageVariable = docker.build("future-common/maven-ci-cd-demo")
                     imageVariable.push()
                 }
             }
